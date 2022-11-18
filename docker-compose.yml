@@ -1,4 +1,4 @@
-version: "3" #composeファイルのバーしょん
+version: "3" #composeファイルのバージョン
 services: 
   washing-ocr: # サービス名
     build: # ビルドに使うDockerファイルのパス
