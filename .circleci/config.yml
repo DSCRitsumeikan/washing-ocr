@@ -1,7 +1,6 @@
 jobs:
   build:
     working_directory: /go/src/washing-ocr
-    <<: *defaults
     steps:
       - run:
           name: Install curl
