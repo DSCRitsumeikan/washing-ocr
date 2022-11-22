@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-	log.Println("Hello World")
 	sampleInteractor := interactor.NewSampleInteractor()
 	sampleController := controller.NewSampleController(sampleInteractor)
 
