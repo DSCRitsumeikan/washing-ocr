@@ -20,7 +20,7 @@ func NewSampleController(usecase input.SampleUsecase) sampleController {
 func (sc sampleController) ShowSample(c Context) {
 	sampleReq := request.SampleReq{}
 	v, ok := c.GetQuery("sample")
-	if ok == false {
+	if !ok {
 		c.JSON(http.StatusBadRequest, "BadRequest")
 		return
 	}

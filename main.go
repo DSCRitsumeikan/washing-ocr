@@ -17,9 +17,7 @@ func main() {
 	v1 := r.Group("api/v1")
 	v1.GET("/sample", func(c *gin.Context) { sampleController.ShowSample(c) })
 
-	r.Run(":8080")
-
-	log.Println("Hello World")
+	if err := r.Run(":8080"); err != nil {
+		log.Fatal("failed r.Run: %w", err)
+	}
 }
-
-// リクエスト飛ばしてもなんともならない。なぜ？
