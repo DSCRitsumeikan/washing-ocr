@@ -14,10 +14,6 @@ func ReplyMessages(bot *linebot.Client, events []*linebot.Event) (err error) {
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("未完成")).Do(); err != nil {
 					log.Println(err)
 				}
-			default:
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("画像以外のフォーマットは受け付けておりません。")).Do(); err != nil {
-					log.Println(err)
-				}
 			}
 		}
 	}
