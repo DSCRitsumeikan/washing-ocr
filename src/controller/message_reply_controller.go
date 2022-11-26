@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"app/src/application/input"
 	"log"
 	"os"
 
@@ -8,7 +9,17 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
-func ReplyMessage(c *gin.Context) {
+type messageReplyController struct {
+	usecase input.MessageReplyUsecase
+}
+
+func NewMessageReplyController(usecase input.MessageReplyUsecase) messageReplyController {
+	return messageReplyController{
+		usecase: usecase,
+	}
+}
+
+func (controller messageReplyController) ReplyMessage(c *gin.Context) {
 	bot, err := linebot.New(
 		os.Getenv("LINE_BOT_CHANNEL_SECRET"),
 		os.Getenv("LINE_BOT_CHANNEL_TOKEN"),
@@ -24,19 +35,8 @@ func ReplyMessage(c *gin.Context) {
 		}
 		return
 	}
-	for _, event := range events {
-		if event.Type == linebot.EventTypeMessage {
-			switch event.Message.(type) {
-			case *linebot.ImageMessage:
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("未完成")).Do(); err != nil {
-					log.Println(err)
-				}
-			default:
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("画像以外のフォーマットは受け付けておりません。")).Do(); err != nil {
-					log.Println(err)
-				}
-			}
-		}
+	err = controller.usecase.ReplyMessages(bot, events)
+	if err != nil {
+		log.Println(err)
 	}
-
 }
