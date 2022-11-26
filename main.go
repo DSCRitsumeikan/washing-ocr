@@ -6,9 +6,11 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	loadenv()
 	sampleInteractor := interactor.NewSampleInteractor()
 	sampleController := controller.NewSampleController(sampleInteractor)
 
@@ -18,5 +20,12 @@ func main() {
 
 	if err := r.Run(":8080"); err != nil {
 		log.Fatal("failed r.Run: %w", err)
+	}
+}
+
+func loadenv() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalln(err)
 	}
 }
