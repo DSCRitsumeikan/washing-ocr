@@ -19,7 +19,7 @@ func main() {
 	r := gin.Default()
 	v1 := r.Group("api/v1")
 	v1.GET("/sample", func(c *gin.Context) { sampleController.ShowSample(c) })
-	v1.POST("/reply", func(c *gin.Context) { messageReplyController.ReplyMessage(c) })
+	v1.POST("/reply", func(c *gin.Context) { messageReplyController.ReplyMessage() })
 
 	if err := r.Run(":8080"); err != nil {
 		log.Fatal("failed r.Run: %w", err)

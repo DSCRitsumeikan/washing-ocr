@@ -3,8 +3,6 @@ package controller
 import (
 	"app/src/application/input"
 	"log"
-
-	"github.com/gin-gonic/gin"
 )
 
 type messageReplyController struct {
@@ -17,7 +15,7 @@ func NewMessageReplyController(usecase input.MessageReplyUsecase) messageReplyCo
 	}
 }
 
-func (controller messageReplyController) ReplyMessage(c *gin.Context) {
+func (controller messageReplyController) ReplyMessage() {
 	err := controller.usecase.ReplyMessages()
 	if err != nil {
 		log.Println(err)
