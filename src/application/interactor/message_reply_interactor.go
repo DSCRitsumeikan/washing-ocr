@@ -1,19 +1,20 @@
 package interactor
 
 import (
-	"app/src/entity/model"
-
-	"github.com/line/line-bot-sdk-go/linebot"
+	"app/src/entity/repository"
 )
 
 type messageReplyInteractor struct {
+	replyMessageHandler repository.MessageReplyRepositoy
 }
 
-func NewMessageReplyInteractor() *messageReplyInteractor {
-	return &messageReplyInteractor{}
+func NewMessageReplyInteractor(replyMessageHandler repository.MessageReplyRepositoy) *messageReplyInteractor {
+	return &messageReplyInteractor{
+		replyMessageHandler: replyMessageHandler,
+	}
 }
 
-func (interactor *messageReplyInteractor) ReplyMessages(bot *linebot.Client, events []*linebot.Event) (err error) {
-	err = model.ReplyMessages(bot, events)
+func (interactor *messageReplyInteractor) ReplyMessages() (err error) {
+	err = interactor.replyMessageHandler.ReplyMessages()
 	return err
 }
