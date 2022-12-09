@@ -3,6 +3,9 @@ package main
 import (
 	"app/src/application/interactor"
 	"app/src/controller"
+	"app/src/infra/linebot"
+	"fmt"
+
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -13,8 +16,12 @@ func main() {
 	loadenv()
 	sampleInteractor := interactor.NewSampleInteractor()
 	sampleController := controller.NewSampleController(sampleInteractor)
-	messageReplyInteractor := interactor.NewMessageReplyInteractor()
-	messageReplyController := controller.NewMessageReplyController(messageReplyInteractor)
+	messageReplyRepositoy, err := linebot.NewReplyMessageHandler()
+	if err != nil {
+		fmt.Println(err)
+		panic("error: failed to init linebot")
+	}
+	messageReplyController := controller.NewMessageReplyController(messageReplyRepositoy)
 
 	r := gin.Default()
 	v1 := r.Group("api/v1")

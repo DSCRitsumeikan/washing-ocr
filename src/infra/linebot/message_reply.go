@@ -1,4 +1,4 @@
-package infra
+package linebot
 
 import (
 	"app/src/entity/repository"

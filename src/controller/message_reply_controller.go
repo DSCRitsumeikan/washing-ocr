@@ -1,22 +1,22 @@
 package controller
 
 import (
-	"app/src/application/input"
+	"app/src/entity/repository"
 	"log"
 )
 
 type messageReplyController struct {
-	usecase input.MessageReplyUsecase
+	repository repository.MessageReplyRepositoy
 }
 
-func NewMessageReplyController(usecase input.MessageReplyUsecase) messageReplyController {
+func NewMessageReplyController(repository repository.MessageReplyRepositoy) messageReplyController {
 	return messageReplyController{
-		usecase: usecase,
+		repository: repository,
 	}
 }
 
 func (controller messageReplyController) ReplyMessage() {
-	err := controller.usecase.ReplyMessages()
+	err := controller.repository.ReplyMessages()
 	if err != nil {
 		log.Println(err)
 	}
