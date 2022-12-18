@@ -3,8 +3,21 @@ updates:
   - package-ecosystem: "gomod"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
       day: "monday"
+      time: "09:00"
+      timezone: "Asia/Tokyo"
+    reviewers:
+      - "ssshotaro44"
+      - "kenboo0426"
+      - "mhk4022"
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Tokyo"
     reviewers:
       - "ssshotaro44"
       - "kenboo0426"
