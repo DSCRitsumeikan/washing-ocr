@@ -2,8 +2,8 @@ package controller
 
 import (
 	"app/src/application/input"
+	"fmt"
 	"log"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/line/line-bot-sdk-go/linebot"
@@ -11,32 +11,35 @@ import (
 
 type messageReplyController struct {
 	usecase input.MessageReplyUsecase
+	bot     *linebot.Client
 }
 
-func NewMessageReplyController(usecase input.MessageReplyUsecase) messageReplyController {
+func NewMessageReplyController(usecase input.MessageReplyUsecase, bot *linebot.Client) messageReplyController {
 	return messageReplyController{
 		usecase: usecase,
+		bot:     bot,
 	}
 }
 
-func (controller messageReplyController) ReplyMessage(c *gin.Context) {
-	bot, err := linebot.New(
-		os.Getenv("LINE_BOT_CHANNEL_SECRET"),
-		os.Getenv("LINE_BOT_CHANNEL_TOKEN"),
-	)
+func (controller *messageReplyController) ReplyMessage(c *gin.Context) {
+	req, err := controller.bot.ParseRequest(c.Request)
 	if err != nil {
-		log.Fatal(err)
+		err = fmt.Errorf("failed bot.ParseRequest: %w", err)
+		log.Println(err)
+	}
+	events := make(input.Events, 0, len(req))
+	for _, e := range req {
+		event := input.Event{
+			ReplyToken: e.ReplyToken,
+			Type:       string(e.Type),
+			Message:    e.Message,
+		}
+		events = append(events, event)
 	}
 
-	events, err := bot.ParseRequest(c.Request)
+	err = controller.usecase.ReplyMessages(events)
 	if err != nil {
-		if err == linebot.ErrInvalidSignature {
-			log.Println(err)
-		}
-		return
-	}
-	err = controller.usecase.ReplyMessages(bot, events)
-	if err != nil {
+		err = fmt.Errorf("failed controller.usecase.ReplyMessages: %w", err)
 		log.Println(err)
 	}
 }

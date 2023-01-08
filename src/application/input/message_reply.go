@@ -1,7 +1,17 @@
 package input
 
-import "github.com/line/line-bot-sdk-go/linebot"
-
 type MessageReplyUsecase interface {
-	ReplyMessages(bot *linebot.Client, events []*linebot.Event) error
+	ReplyMessages(Events) error
 }
+
+type Message interface {
+	Message()
+}
+
+type Event struct {
+	ReplyToken string
+	Type       string
+	Message    Message
+}
+
+type Events []Event

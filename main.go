@@ -3,18 +3,25 @@ package main
 import (
 	"app/src/application/interactor"
 	"app/src/controller"
+	"app/src/infra/linebot"
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	loadenv()
+
+	bot, err := linebot.NewLinebotClient()
+	if err != nil {
+		log.Fatal("failed linebot.NewLinebotClient: ", err)
+	}
+
 	sampleInteractor := interactor.NewSampleInteractor()
 	sampleController := controller.NewSampleController(sampleInteractor)
-	messageReplyInteractor := interactor.NewMessageReplyInteractor()
-	messageReplyController := controller.NewMessageReplyController(messageReplyInteractor)
+
+	messageReplyRepository := linebot.NewMessageReplyRepository(bot)
+	messageReplyInteractor := interactor.NewMessageReplyInteractor(messageReplyRepository)
+	messageReplyController := controller.NewMessageReplyController(messageReplyInteractor, bot)
 
 	r := gin.Default()
 	v1 := r.Group("api/v1")
@@ -22,13 +29,6 @@ func main() {
 	v1.POST("/reply", func(c *gin.Context) { messageReplyController.ReplyMessage(c) })
 
 	if err := r.Run(":8080"); err != nil {
-		log.Fatal("failed r.Run: %w", err)
-	}
-}
-
-func loadenv() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatalln(err)
+		log.Fatal("failed r.Run: ", err)
 	}
 }
