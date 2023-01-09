@@ -2,7 +2,11 @@ module app
 
 go 1.19
 
-require github.com/gin-gonic/gin v1.8.1
+require (
+	github.com/gin-gonic/gin v1.8.1
+	github.com/joho/godotenv v1.4.0
+	github.com/line/line-bot-sdk-go v7.8.0+incompatible
+)
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect

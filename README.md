@@ -20,6 +20,17 @@ DDD
 - application/ -> application層, application service
 - infra/ -> infrastructure層, external api
 
+## 環境変数
+```
+rootに.envファイルを作成して以下の環境変数を追加
+なお、LINE BOTの環境変数は自分で公式LINEアカウントを作成しそこから取得すること
+```
+
+| NAME                     | Description                  |
+| ------------------------ | ---------------------------- |
+| LINE_BOT_CHANNEL_SECRET  | line bot channel sercret     |
+| LINE_BOT_CHANNEL_TOKEN   | line bot channel token       |
+
 # ブランチの運用
 mainからブランチを切る
 
@@ -27,6 +38,11 @@ PRは一人以上のapproveがあればmerge（CICDで設定したい）
 
 ## チケットの管理
 github projectsで管理
+
+## LINE Messaeging APIの運用 ※要改善
+各自公式LINEを作成する。[公式LINE作成のやり方はこちら](https://qiita.com/yuki_0920/items/cbdbd5220a6a8b4eef19)
+ngrokを使ってフォワーディングされたurl+/api/v1/replyをLINEの設定からwebhook urlに保存する(例:) https://<span>XXXXXXXX</span>.ngrok.io/api/v1/reply )。[webhookの設定方法](https://qiita.com/mininobu/items/b45dbc70faedf30f484e)
+
 
 ## 関連URL
 ### 議事録
